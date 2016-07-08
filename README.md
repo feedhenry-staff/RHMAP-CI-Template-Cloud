@@ -23,3 +23,12 @@ This is a blank 'hello world' FeedHenry MBaaS. Use it as a starting point for bu
             {
               "msg": "Hello world"
             }
+            
+### Testing
+Unit tests are setup and can be run using Gulp
+
+* Install grunt: ```npm install --global gulp-cli```
+* Run ```gulp test:unit``` for unit tests
+
+Unit tests use `Mocha`framework.  Tests are in ``test/unit`` folder
+
