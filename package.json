@@ -27,7 +27,11 @@
     "should": "2.1.1",
     "sinon": "^1.17.2",
     "supertest": "0.8.2",
-    "time-grunt": "^0.3.2"
+    "time-grunt": "^0.3.2",
+    "async": "^2.0.0-rc.6",
+    "fh-fhc": "^2.9.1-338",
+    "run-sequence": "^1.2.2",
+    "sendgrid": "^3.0.7"
   },
   "main": "application.js",
   "scripts": {
