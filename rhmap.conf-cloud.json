@@ -4,7 +4,8 @@
 	"projectid": "",
 	"login": {
 		"username": "",
-		"password": ""
+		"password": "",
+		"apikey": ""
 	},
 	"deploy": {
 		"environments": []
