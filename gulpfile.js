@@ -303,21 +303,21 @@ gulp.task('fhc-login-basic', ['fhc-target'], function(done){
 //fhc also needs an authenticated user
 gulp.task('fhc-login-apikey', ['fhc-target'], function(done){
 
-    var configExists = fs.existsSync(process.env.rhmapClientConfig);
+    var configExists = fs.existsSync(process.env.rhmapCloudConfig);
 
     //If it doesn't, create a new blank file
     // If it does, read it
     if(!configExists){
-        fs.writeFileSync(process.env.rhmapClientConfig, JSON.stringify({}));
-        console.log('Please specify the api key in the ' + process.env.rhmapClientConfig + ' file');
+        fs.writeFileSync(process.env.rhmapCloudConfig, JSON.stringify({}));
+        console.log('Please specify the api key in the ' + process.env.rhmapCloudConfig + ' file');
         done();
     } else{
-        var rhmapConfFileContent = JSON.parse(fs.readFileSync(process.env.rhmapClientConfig)),
+        var rhmapConfFileContent = JSON.parse(fs.readFileSync(process.env.rhmapCloudConfig)),
             apiKey = rhmapConfFileContent.login.apikey;
 
         if(!apiKey){
-            console.log('Please specify the api key in the ' + process.env.rhmapClientConfig + ' file');
-            return done();
+            console.log('Please specify the api key in the ' + process.env.rhmapCloudConfig + ' file');
+            return done(new Error("API key not specified"));
         }
 
         fhcLoad(function(){
