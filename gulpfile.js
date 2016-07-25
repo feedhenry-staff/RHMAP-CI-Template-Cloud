@@ -8,7 +8,7 @@ var sendGrid = require('sendgrid').mail;
 var runSequence = require('run-sequence');
 
 process.env.rhmapCloudConfig = './rhmap.conf-cloud.json';
- 
+
 gulp.task('test:unit', shell.task([
   'env NODE_PATH=. ./node_modules/.bin/mocha -A -u exports -t 8000 --recursive test/unit/'
 ]));
@@ -91,8 +91,8 @@ gulp.task('fhc-cloud-setup', ['fhc-login-apikey'], function(done){
                 }
 
                 var deploy = environment.label.toLowerCase().indexOf('dev') > -1;
-                //Completely overwriting the current environments in the config file in case a env has been deleted from RHMAP. 
-                //Just need to persist user changes to deploy property 
+                //Completely overwriting the current environments in the config file in case a env has been deleted from RHMAP.
+                //Just need to persist user changes to deploy property
                 envStructured.push({
                     envId: environment.id,
                     name: environment.label,
@@ -231,10 +231,16 @@ gulp.task('fhc-target', function(done){
 	var configExists = fs.existsSync(process.env.rhmapCloudConfig);
 
     if(!configExists){
-        console.log('Please specify the host in the ' + process.env.rhmapCloudConfig + ' file')
-        done();
+      console.log("Please create "+process.env.rhmapCloudConfig+" file in your cloud app folder.");
+
+        done(new Error("Config file not found"));
     } else {
     	var rhmapConfFileContent = JSON.parse(fs.readFileSync(process.env.rhmapCloudConfig));
+      if (!rhmapConfFileContent.host){
+        console.log('Please specify the host in the ' + process.env.rhmapCloudConfig + ' file')
+        done(new Error("Host not specified in config file."));
+        return ;
+      }
 
         fhcLoad(function(){
 	        fhc.fhcfg({_ : ["get", "feedhenry"]}, function(err, host){
@@ -264,7 +270,7 @@ gulp.task('fhc-login-basic', ['fhc-target'], function(done){
     var configExists = fs.existsSync(process.env.rhmapCloudConfig);
 
     //If it doesn't, create a new blank file
-    // If it does, read it 
+    // If it does, read it
     if(!configExists){
         console.log('Please specify the username and password in the ' + process.env.rhmapCloudConfig + ' file')
         done();
@@ -300,7 +306,7 @@ gulp.task('fhc-login-apikey', ['fhc-target'], function(done){
     var configExists = fs.existsSync(process.env.rhmapClientConfig);
 
     //If it doesn't, create a new blank file
-    // If it does, read it 
+    // If it does, read it
     if(!configExists){
         fs.writeFileSync(process.env.rhmapClientConfig, JSON.stringify({}));
         console.log('Please specify the api key in the ' + process.env.rhmapClientConfig + ' file');
